@@ -53,14 +53,6 @@ exports.createRepairJob = async (req, res, next) => {
       return ApiResponse.badRequest(res, 'Customer name and phone number are required');
     }
 
-    if (!problemDescription?.trim()) {
-      return ApiResponse.badRequest(res, 'Problem description is required');
-    }
-
-    if (!deviceDetails?.brand || !deviceDetails?.model) {
-      return ApiResponse.badRequest(res, 'Device brand and model are required');
-    }
-
     const ticketNumber = await generateTicketNumber();
 
     // 1. Resolve Customer
@@ -96,10 +88,11 @@ exports.createRepairJob = async (req, res, next) => {
     });
 
     // 3. Initial Timeline Entry
+    const probText = problemDescription?.trim() ? ` Problem: ${problemDescription.trim()}` : '';
     const timeline = [
       {
         status: 'Received',
-        notes: `Device received for repair. Problem: ${problemDescription}`,
+        notes: `Device received for repair.${probText}`,
         timestamp: new Date()
       }
     ];

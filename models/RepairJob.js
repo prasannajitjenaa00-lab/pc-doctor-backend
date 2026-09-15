@@ -87,8 +87,8 @@ const repairJobSchema = new mongoose.Schema(
         enum: ['Laptop', 'Desktop', 'Printer', 'CCTV', 'Networking', 'Mobile', 'Tablet', 'Other'],
         default: 'Laptop'
       },
-      brand: { type: String, required: true },
-      model: { type: String, required: true },
+      brand: { type: String, default: '' },
+      model: { type: String, default: '' },
       serialNumber: { type: String, default: '' },
       color: { type: String, default: '' },
       devicePassword: { type: String, default: '' },
@@ -101,7 +101,7 @@ const repairJobSchema = new mongoose.Schema(
     },
     problemDescription: {
       type: String,
-      required: [true, 'Problem description is required']
+      default: ''
     },
     technicianNotes: {
       type: String,
