@@ -73,6 +73,10 @@ exports.createCustomer = async (req, res, next) => {
   try {
     const { name, phone, email, address, gstNumber, notes } = req.body;
 
+    if (!name?.trim() || !phone?.trim()) {
+      return ApiResponse.badRequest(res, 'Customer name and phone number are required');
+    }
+
     const existing = await Customer.findOne({ phone: phone.trim() });
     if (existing) {
       return ApiResponse.badRequest(res, `Customer with phone number '${phone}' already exists`);

@@ -49,6 +49,10 @@ exports.createRepairJob = async (req, res, next) => {
       warrantyDays = 30
     } = req.body;
 
+    if (!customerDetails?.name?.trim() || !customerDetails?.phone?.trim()) {
+      return ApiResponse.badRequest(res, 'Customer name and phone number are required');
+    }
+
     if (!problemDescription?.trim()) {
       return ApiResponse.badRequest(res, 'Problem description is required');
     }
