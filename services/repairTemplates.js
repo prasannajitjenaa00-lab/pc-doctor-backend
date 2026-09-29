@@ -259,6 +259,20 @@ const REPAIR_TEMPLATES = {
       'Run Functional & Stability Quality Check',
       'Clean Device & Prepare for Customer Handover'
     ]
+  },
+  'Not Working': {
+    serviceName: 'Not Working',
+    defaultEstimatedCost: 500,
+    checklist: [
+      'Inspect Physical Condition & Power Cord / Adapter',
+      'Test DC Power Input, Battery Voltage & Charging Indicator',
+      'Perform Motherboard Power Rail & Short-Circuit Diagnostic',
+      'Test Power Switch / Button & CMOS Battery',
+      'Reseat & Test RAM, CPU, Storage & Display Cables',
+      'Isolate Root Cause (No-Power / No-Display / No-Boot)',
+      'Perform Component Repair or Board-Level Service',
+      'Run Stability Stress Test & Final Quality Inspection'
+    ]
   }
 };
 

@@ -39,8 +39,8 @@ exports.createRepairJob = async (req, res, next) => {
     const {
       customerId,
       customerDetails,
-      deviceDetails,
-      problemDescription,
+      deviceDetails = {},
+      problemDescription = '',
       selectedServices = [], // Array of service names e.g. ['Windows Installation', 'Laptop Cleaning']
       technicianNotes = '',
       estimatedCost = 0,
@@ -76,8 +76,9 @@ exports.createRepairJob = async (req, res, next) => {
 
     // 2. Build Services List with Auto Checklists
     const services = (selectedServices || []).map((srv) => {
-      const srvName = typeof srv === 'string' ? srv : srv.serviceName;
-      const template = REPAIR_TEMPLATES[srvName] || REPAIR_TEMPLATES['Custom Repair'];
+      const srvName = typeof srv === 'string' ? srv : srv?.serviceName;
+      if (!srvName) return null;
+      const template = REPAIR_TEMPLATES[srvName] || REPAIR_TEMPLATES['Custom Repair'] || { defaultEstimatedCost: 0 };
 
       return {
         serviceName: srvName,
@@ -85,7 +86,7 @@ exports.createRepairJob = async (req, res, next) => {
         customNotes: srv.customNotes || '',
         serviceCost: srv.serviceCost !== undefined ? Number(srv.serviceCost) : (template.defaultEstimatedCost || 0)
       };
-    });
+    }).filter(Boolean);
 
     // 3. Initial Timeline Entry
     const probText = problemDescription?.trim() ? ` Problem: ${problemDescription.trim()}` : '';
@@ -106,22 +107,24 @@ exports.createRepairJob = async (req, res, next) => {
       customerDetails: {
         name: customerDoc ? customerDoc.name : custName,
         phone: customerDoc ? customerDoc.phone : custPhone,
-        email: customerDoc ? customerDoc.email : (customerDetails?.email || ''),
-        address: customerDoc ? customerDoc.address : (customerDetails?.address || '')
+        email: customerDoc ? customerDoc.email : (customerDetails?.email?.trim() || ''),
+        address: customerDoc ? customerDoc.address : (customerDetails?.address?.trim() || '')
       },
       deviceDetails: {
-        deviceType: deviceDetails.deviceType || 'Laptop',
-        brand: deviceDetails.brand,
-        model: deviceDetails.model,
-        serialNumber: deviceDetails.serialNumber || '',
-        color: deviceDetails.color || '',
-        devicePassword: deviceDetails.devicePassword || '',
-        accessoriesReceived: deviceDetails.accessoriesReceived || [],
-        condition: deviceDetails.condition || {},
-        photos: deviceDetails.photos || []
+        deviceType: deviceDetails?.deviceType || 'Laptop',
+        brand: deviceDetails?.brand?.trim() || '',
+        model: deviceDetails?.model?.trim() || '',
+        serialNumber: deviceDetails?.serialNumber?.trim() || '',
+        color: deviceDetails?.color?.trim() || '',
+        devicePassword: deviceDetails?.devicePassword?.trim() || '',
+        accessoriesReceived: Array.isArray(deviceDetails?.accessoriesReceived)
+          ? deviceDetails.accessoriesReceived.filter(Boolean)
+          : [],
+        condition: deviceDetails?.condition || {},
+        photos: deviceDetails?.photos || []
       },
-      problemDescription,
-      technicianNotes,
+      problemDescription: problemDescription?.trim() || '',
+      technicianNotes: technicianNotes?.trim() || '',
       services,
       partsUsed: [],
       status: 'Received',

@@ -168,19 +168,20 @@ const generateRepairTokenPDF = (repair, shopSettings = {}) => {
       doc.rect(40, y, 515, 75).strokeColor('#e5e7eb').stroke();
       doc.fontSize(10).fillColor('#0f766e').text('DEVICE SPECIFICATIONS', 50, y + 10, { bold: true });
       doc.fontSize(9).fillColor('#374151');
-      doc.text(`Type: ${repair.deviceDetails.deviceType}`, 50, y + 28);
-      doc.text(`Brand & Model: ${repair.deviceDetails.brand} ${repair.deviceDetails.model}`, 50, y + 42);
-      doc.text(`Serial / IMEI: ${repair.deviceDetails.serialNumber || 'N/A'}`, 50, y + 56);
+      doc.text(`Type: ${repair.deviceDetails?.deviceType || 'Laptop'}`, 50, y + 28);
+      const brandModel = [repair.deviceDetails?.brand, repair.deviceDetails?.model].filter(Boolean).join(' ') || 'Not specified';
+      doc.text(`Brand & Model: ${brandModel}`, 50, y + 42);
+      doc.text(`Serial / IMEI: ${repair.deviceDetails?.serialNumber || 'N/A'}`, 50, y + 56);
 
-      doc.text(`Accessories: ${repair.deviceDetails.accessoriesReceived?.join(', ') || 'Unit only'}`, 280, y + 28);
-      doc.text(`Lock / Password: ${repair.deviceDetails.devicePassword || 'None'}`, 280, y + 42);
-      doc.text(`Color: ${repair.deviceDetails.color || 'Standard'}`, 280, y + 56);
+      doc.text(`Accessories: ${repair.deviceDetails?.accessoriesReceived?.length > 0 ? repair.deviceDetails.accessoriesReceived.join(', ') : 'Unit only'}`, 280, y + 28);
+      doc.text(`Lock / Password: ${repair.deviceDetails?.devicePassword || 'None'}`, 280, y + 42);
+      doc.text(`Color: ${repair.deviceDetails?.color || 'Standard'}`, 280, y + 56);
 
       // Problem Description
       y += 90;
       doc.rect(40, y, 515, 55).strokeColor('#e5e7eb').stroke();
       doc.fontSize(10).fillColor('#b91c1c').text('REPORTED PROBLEM', 50, y + 8, { bold: true });
-      doc.fontSize(9).fillColor('#1f2937').text(repair.problemDescription, 50, y + 24, { width: 495 });
+      doc.fontSize(9).fillColor('#1f2937').text(repair.problemDescription || 'General Inspection / Repair', 50, y + 24, { width: 495 });
 
       // Physical Condition Checklist Matrix
       y += 70;
@@ -286,7 +287,8 @@ const generateRepairInvoicePDF = (repair, shopSettings = {}) => {
       doc.fontSize(9).fillColor('#4b5563');
       doc.text(`Name: ${repair.customerDetails.name}`, 320, 136);
       doc.text(`Phone: ${repair.customerDetails.phone}`, 320, 150);
-      doc.text(`Device: ${repair.deviceDetails.brand} ${repair.deviceDetails.model} (${repair.deviceDetails.deviceType})`, 320, 164);
+      const invDeviceName = [repair.deviceDetails?.brand, repair.deviceDetails?.model].filter(Boolean).join(' ') || repair.deviceDetails?.deviceType || 'Device';
+      doc.text(`Device: ${invDeviceName} (${repair.deviceDetails?.deviceType || 'General'})`, 320, 164);
 
       // Divider
       doc.moveTo(40, 185).lineTo(555, 185).strokeColor('#e5e7eb').stroke();

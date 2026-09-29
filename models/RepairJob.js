@@ -47,18 +47,18 @@ const timelineEntrySchema = new mongoose.Schema({
 });
 
 const conditionChecklistSchema = new mongoose.Schema({
-  screen: { type: String, default: 'Good', enum: ['Good', 'Scratched', 'Cracked', 'Flickering', 'No Display', 'N/A'] },
-  body: { type: String, default: 'Good', enum: ['Good', 'Minor Scratches', 'Dented', 'Broken Hinges', 'Severe Damage'] },
-  keyboard: { type: String, default: 'Working', enum: ['Working', 'Keys Missing', 'Partial Failure', 'Not Working', 'N/A'] },
-  battery: { type: String, default: 'Working', enum: ['Working', 'Degraded', 'Dead', 'Swollen', 'Missing', 'N/A'] },
-  camera: { type: String, default: 'Working', enum: ['Working', 'Faulty', 'Not Working', 'N/A'] },
-  speakers: { type: String, default: 'Working', enum: ['Working', 'Distorted', 'Muted/Dead', 'N/A'] },
-  usbPorts: { type: String, default: 'Working', enum: ['Working', 'Loose', 'Damaged', 'Not Working'] },
-  hdmi: { type: String, default: 'Working', enum: ['Working', 'Damaged', 'Not Working', 'N/A'] },
-  wifi: { type: String, default: 'Working', enum: ['Working', 'Weak Signal', 'Not Working', 'N/A'] },
+  screen: { type: String, default: 'Good', enum: ['Good', 'Not Working', 'Scratched', 'Cracked', 'Flickering', 'No Display', 'N/A'] },
+  body: { type: String, default: 'Good', enum: ['Good', 'Not Working', 'Minor Scratches', 'Dented', 'Broken Hinges', 'Severe Damage'] },
+  keyboard: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Keys Missing', 'Partial Failure', 'Faulty', 'N/A'] },
+  battery: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Degraded', 'Dead', 'Swollen', 'Missing', 'N/A'] },
+  camera: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Faulty', 'N/A'] },
+  speakers: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Distorted', 'Muted/Dead', 'N/A'] },
+  usbPorts: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Loose', 'Damaged'] },
+  hdmi: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Damaged', 'N/A'] },
+  wifi: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Weak Signal', 'Weak', 'Not Working', 'N/A'] },
   bluetooth: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'N/A'] },
-  touchpad: { type: String, default: 'Working', enum: ['Working', 'Erratic', 'Dead', 'N/A'] },
-  powerButton: { type: String, default: 'Working', enum: ['Working', 'Stuck', 'Loose', 'Broken'] },
+  touchpad: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Erratic', 'Dead', 'N/A'] },
+  powerButton: { type: String, default: 'Working', enum: ['Working', 'Not Working', 'Stuck', 'Loose', 'Broken'] },
   conditionNotes: { type: String, default: '' }
 });
 
